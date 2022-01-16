@@ -1,0 +1,2 @@
+export const EPOCHMS = 1642340534773
+export const MSINDAY = 86400000
