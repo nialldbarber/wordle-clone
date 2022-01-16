@@ -12,6 +12,7 @@ export function checkGuessMatchesWord(
   let finalGuess = []
   let guessedWord = formatWordIntoTable(guess)
   let actualWord = formatWordIntoTable(word)
+
   // loop through guess
   for (let guessedLetter in guessedWord) {
     let { guess, index } = guessedWord[guessedLetter]
