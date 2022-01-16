@@ -1,30 +1,33 @@
-import { useRef, useState } from "react"
+import { forwardRef, useState } from "react"
 
-const GuessRow = () => {
-  const [guess, setGuess] = useState("")
-  const ref = useRef(null)
-
-  // click row, navigates to input
-  const handleChange = (e: any) => {
-    setGuess(e.target.value)
-    console.log(e.target.value)
-  }
-
-  // limit by 5 characters
-
-  // enter, sends it off to guess function
-
-  return (
-    <div>
-      <p>guess row</p>
-      <input
-        type="text"
-        maxLength={5}
-        value={guess}
-        onChange={handleChange}
-      />
-    </div>
-  )
+type GuessRowProps = {
+  value?: any
+  onChange?: any
+  onClick?: any
+  disabled?: boolean
 }
+
+const GuessRow = forwardRef(
+  ({ value, onChange, onClick, disabled }: GuessRowProps, ref) => {
+    return (
+      <div>
+        <p>guess row</p>
+        <input
+          ref={ref}
+          type="text"
+          maxLength={5}
+          value={value}
+          onChange={onChange}
+        />
+        <button
+          disabled={value?.length < 5 ?? true}
+          onClick={onClick}
+        >
+          +
+        </button>
+      </div>
+    )
+  }
+)
 
 export default GuessRow
