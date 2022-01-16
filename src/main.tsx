@@ -1,10 +1,12 @@
 import { StrictMode } from "react"
+
 import { render } from "react-dom"
-import "./index.css"
-import App from "./App"
+import App from "src/App"
+import { BaseStyles } from "src/styles/Base"
 
 render(
   <StrictMode>
+    <BaseStyles />
     <App />
   </StrictMode>,
   document.getElementById("root")

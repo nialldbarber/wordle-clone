@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react"
+import { forwardRef } from "react"
 
 type GuessRowProps = {
   value?: any
@@ -9,22 +9,31 @@ type GuessRowProps = {
 
 const GuessRow = forwardRef(
   ({ value, onChange, onClick, disabled }: GuessRowProps, ref) => {
+    const disableTab = (e: any) => {
+      if (e.key === "Tab") {
+        e.preventDefault()
+      }
+    }
+
     return (
       <div>
-        <p>guess row</p>
-        <input
-          ref={ref}
-          type="text"
-          maxLength={5}
-          value={value}
-          onChange={onChange}
-        />
-        <button
-          disabled={value?.length < 5 ?? true}
-          onClick={onClick}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            onClick()
+          }}
         >
-          +
-        </button>
+          <input
+            ref={ref}
+            type="text"
+            tabIndex={-1}
+            onKeyDown={disableTab}
+            maxLength={5}
+            value={value}
+            onChange={onChange}
+          />
+          <button disabled={value?.length < 5 ?? true}> +</button>
+        </form>
       </div>
     )
   }
