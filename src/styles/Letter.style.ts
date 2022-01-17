@@ -14,11 +14,12 @@ export const Letter = styled.h2`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 62px;
+  height: 62px;
+  font-size: 2rem;
   font-weight: bold;
   background-color: rgb(129, 131, 132);
-  margin: 0.5rem;
+  margin: 5px;
 
   &.correct {
     background-color: rgb(83, 141, 78);
