@@ -1,8 +1,10 @@
 import { forwardRef, useEffect, useState } from "react"
 
 import { WORD_OF_THE_DAY } from "src/constants/words"
+import { words } from "src/data/words"
 import { Form, Letter, LetterContainer } from "src/styles/Letter.style"
 import { checkGuessMatchesWord } from "src/utils/checkGuessMatchesWord"
+import { isWordInList } from "src/utils/isWordInList"
 
 type GuessRowProps = {
   value?: any
@@ -38,12 +40,22 @@ const GuessRow = forwardRef(
       // @ts-ignore
       let guess = checkGuessMatchesWord(value, wordOfTheDay)
       if (value.length === 5) {
+        // @ts-ignore
         setOutput(guess)
       }
     }, [value])
 
+    useEffect(() => {
+      if (commitToGuess) {
+        let isWordValid = isWordInList(value, words)
+        if (!isWordValid) {
+          setCommitToGuess(false)
+        }
+      }
+    }, [commitToGuess])
+
     return (
-      <div style={{height: 65}}>
+      <div style={{height: 70}}>
         <Form
           onSubmit={(e) => {
             e.preventDefault()
