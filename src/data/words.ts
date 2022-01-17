@@ -2314,4 +2314,5 @@ export const words = [
   "artsy",
   "rural",
   "shave",
+  "tears"
 ]
