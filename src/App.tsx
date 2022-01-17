@@ -10,6 +10,7 @@ import { words } from "src/data/words"
 import { isWordInList } from "src/utils/isWordInList"
 import { SUCCESS } from "src/constants/messages"
 import { Grid } from "./styles/Grid"
+import { Title } from "./styles/Typography"
 
 const App = () => {
   // alerts the user if they won or input an invalid word
@@ -113,7 +114,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>The word is {actualWord}</h1>
+      <Title>Wordle</Title>
       <h1>{toastMessage}</h1>
       <Grid>
         <div>
