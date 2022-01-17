@@ -2,8 +2,13 @@ import { forwardRef, useEffect, useState } from "react"
 
 import { WORD_OF_THE_DAY } from "src/constants/words"
 import { words } from "src/data/words"
-import { Form, Letter, LetterContainer } from "src/styles/Letter.style"
+import {
+  Form,
+  Letter,
+  LetterContainer,
+} from "src/styles/Letter.style"
 import { checkGuessMatchesWord } from "src/utils/checkGuessMatchesWord"
+import { getLetterBackground } from "src/utils/getLetterBackground"
 import { isWordInList } from "src/utils/isWordInList"
 
 type GuessRowProps = {
@@ -13,26 +18,14 @@ type GuessRowProps = {
   disabled?: boolean
 }
 
-const GuessRow = forwardRef(
-  ({ value, onChange, onClick, disabled }: GuessRowProps, ref) => {
+const GuessRow = forwardRef<HTMLInputElement, GuessRowProps>(
+  ({ value, onChange, onClick }, ref) => {
     const [commitToGuess, setCommitToGuess] = useState(false)
     const [output, setOutput] = useState([])
     const disableTab = (e: any) => {
       if (e.key === "Tab") {
         e.preventDefault()
       }
-    }
-
-    const getLetterBackground = (letter: number) => {
-      let className
-      if (letter === 2) {
-        className = 'correct'
-      } else if (letter === 1) {
-        className = 'partial'
-      } else {
-        className = 'incorrect'
-      }
-      return className
     }
 
     useEffect(() => {
@@ -55,7 +48,7 @@ const GuessRow = forwardRef(
     }, [commitToGuess])
 
     return (
-      <div style={{height: 70}}>
+      <div style={{ height: 70 }}>
         <Form
           onSubmit={(e) => {
             e.preventDefault()
@@ -83,7 +76,7 @@ const GuessRow = forwardRef(
         </LetterContainer>
         {commitToGuess ? (
           <LetterContainer>
-            {output.map(({guess, output}, i) => (
+            {output.map(({ guess, output }, i) => (
               <Letter
                 key={guess + i}
                 className={getLetterBackground(output)}
@@ -93,11 +86,11 @@ const GuessRow = forwardRef(
             ))}
           </LetterContainer>
         ) : (
-        <LetterContainer>
-          {value.split('').map((letter: string, i: number) => (
-            <Letter key={letter + i}>{letter}</Letter>
-          ))}
-        </LetterContainer>
+          <LetterContainer>
+            {value.split("").map((letter: string, i: number) => (
+              <Letter key={letter + i}>{letter}</Letter>
+            ))}
+          </LetterContainer>
         )}
       </div>
     )

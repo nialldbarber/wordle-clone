@@ -1,38 +1,47 @@
-import { useEffect, useRef, useState } from "react"
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 
 import { GuessRow } from "src/components/GuessRow"
-import { GUESSED_WORDS, WORD_OF_THE_DAY } from "src/constants/words"
-import { getWordFromListViaEpoch } from "src/utils/getWordFromList"
-import { addItemToLocalStorage } from "src/utils/saveToLocalStorage"
-import { checkGuessMatchesWord } from "src/utils/checkGuessMatchesWord"
-import { isGuessCorrect, isGuessLengthEnough } from "src/utils/isGuessCorrect"
-import { words } from "src/data/words"
-import { isWordInList } from "src/utils/isWordInList"
 import { SUCCESS } from "src/constants/messages"
-import { Grid } from "./styles/Grid"
-import { Title } from "./styles/Typography"
+import { GUESSED_WORDS, WORD_OF_THE_DAY } from "src/constants/words"
+import { words } from "src/data/words"
+import { Grid } from "src/styles/Grid"
+import { Title } from "src/styles/Typography"
+import { checkGuessMatchesWord } from "src/utils/checkGuessMatchesWord"
+import { getWordFromListViaEpoch } from "src/utils/getWordFromList"
+import {
+  isGuessCorrect,
+  isGuessLengthEnough,
+} from "src/utils/isGuessCorrect"
+import { isWordInList } from "src/utils/isWordInList"
+import { addItemToLocalStorage } from "src/utils/saveToLocalStorage"
 
 const App = () => {
   // alerts the user if they won or input an invalid word
-  const [toastMessage, setToastMessage] = useState('')
+  const [toastMessage, setToastMessage] = useState("")
   // currently a place to store all guesses for local storage retrieval
   const [guesses, setGuesses] = useState<string[]>([])
 
   // ugly list of each guess and their respective refs
   const [guessOne, setGuessOne] = useState("")
-  const oneRef = useRef()
+  const oneRef = useRef(null)
   const [guessTwo, setGuessTwo] = useState("")
-  const twoRef = useRef()
+  const twoRef = useRef(null)
   const [guessThree, setGuessThree] = useState("")
-  const threeRef = useRef()
+  const threeRef = useRef(null)
   const [guessFour, setGuessFour] = useState("")
-  const fourRef = useRef()
+  const fourRef = useRef(null)
   const [guessFive, setGuessFive] = useState("")
-  const fiveRef = useRef()
+  const fiveRef = useRef(null)
   const [guessSix, setGuessSix] = useState("")
-  const sixRef = useRef()
+  const sixRef = useRef(null)
   // the last ref means the user can't edit anymore
-  const lastRef = useRef()
+  const lastRef = useRef(null)
 
   // actual word state variable to check against the guess
   const [actualWord, setActualWord] = useState("")
@@ -50,7 +59,7 @@ const App = () => {
   // a) correct b) partial or c) incorrect
   const handleGuess = (
     guess: string,
-    guessFn: any,
+    guessFn: (arg?: any) => void,
     currentRef: any,
     nextRef: any
   ) => {
@@ -58,9 +67,10 @@ const App = () => {
     // if guess is not valid, clear input and re-focus on current ref
     let isWordValid = isWordInList(guess, words)
     if (!isWordValid) {
-      setToastMessage('Invalid word!')
-      guessFn('')
+      setToastMessage("Invalid word!")
+      guessFn("")
       currentRef.current.focus()
+      // bail out
       return
     }
     // ✅
@@ -68,9 +78,7 @@ const App = () => {
     // not sure why, but i think i'll use this
     // later to make sure it's not a new puzzle
     // every time a user refreshes
-
-    // retrieve items from local storage
-    localStorage.setItem(GUESSED_WORDS, JSON.stringify(guesses))
+    addItemToLocalStorage(GUESSED_WORDS, JSON.stringify(guesses))
 
     // check guess against actual word and produce a lookup table
     let wordCheck = checkGuessMatchesWord(guess, actualWord)
@@ -79,7 +87,7 @@ const App = () => {
     // get the verdict of the guess
     let guessOutcome = isGuessCorrect(wordCheck)
     // check verdict & length
-    if (guessOutcome !== 'correct' && guessLengthEnough) {
+    if (guessOutcome !== "correct" && guessLengthEnough) {
       nextRef.current.focus()
     } else {
       setToastMessage(SUCCESS)
@@ -122,37 +130,54 @@ const App = () => {
             ref={oneRef}
             value={guessOne}
             onChange={(e: any) => handleChange(e, setGuessOne)}
-            onClick={() => handleGuess(guessOne, setGuessOne, oneRef, twoRef)}
+            onClick={() =>
+              handleGuess(guessOne, setGuessOne, oneRef, twoRef)
+            }
           />
           <GuessRow
             ref={twoRef}
             value={guessTwo}
             onChange={(e: any) => handleChange(e, setGuessTwo)}
-            onClick={() => handleGuess(guessTwo, setGuessTwo, twoRef, threeRef)}
+            onClick={() =>
+              handleGuess(guessTwo, setGuessTwo, twoRef, threeRef)
+            }
           />
           <GuessRow
             ref={threeRef}
             value={guessThree}
             onChange={(e: any) => handleChange(e, setGuessThree)}
-            onClick={() => handleGuess(guessThree, setGuessThree, threeRef, fourRef)}
+            onClick={() =>
+              handleGuess(
+                guessThree,
+                setGuessThree,
+                threeRef,
+                fourRef
+              )
+            }
           />
           <GuessRow
             ref={fourRef}
             value={guessFour}
             onChange={(e: any) => handleChange(e, setGuessFour)}
-            onClick={() => handleGuess(guessFour, setGuessFour, fourRef, fiveRef)}
+            onClick={() =>
+              handleGuess(guessFour, setGuessFour, fourRef, fiveRef)
+            }
           />
           <GuessRow
             ref={fiveRef}
             value={guessFive}
             onChange={(e: any) => handleChange(e, setGuessFive)}
-            onClick={() => handleGuess(guessFive, setGuessFive, fiveRef, sixRef)}
+            onClick={() =>
+              handleGuess(guessFive, setGuessFive, fiveRef, sixRef)
+            }
           />
           <GuessRow
             ref={sixRef}
             value={guessSix}
             onChange={(e: any) => handleChange(e, setGuessSix)}
-            onClick={() => handleGuess(guessSix, setGuessSix, sixRef, lastRef)}
+            onClick={() =>
+              handleGuess(guessSix, setGuessSix, sixRef, lastRef)
+            }
           />
           <input style={{ display: "none" }} ref={lastRef} />
         </div>
